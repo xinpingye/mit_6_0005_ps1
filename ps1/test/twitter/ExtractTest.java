@@ -25,6 +25,7 @@ public class ExtractTest {
     //username-mention nums = 0, 1, n
     //similar username-mention word nums = 0, 1
     //same username-mention occurs nums = 1, n
+    //text cotain uppercase username-mention and username is lowercase
     //cover each partitions
     /*
      * TODO: your testing strategies for these methods should go here.
@@ -38,13 +39,15 @@ public class ExtractTest {
     private static final Instant d4 = Instant.parse("2016-02-17T13:00:00Z");
     private static final Instant d5 = Instant.parse("2016-02-17T14:00:00Z");
     private static final Instant d6 = Instant.parse("2016-02-17T15:00:00Z");
+    private static final Instant d7 = Instant.parse("2016-02-17T16:00:00Z");
     
     private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?", d1);
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
     private static final Tweet tweet3 = new Tweet(3, "cacy", "rivest talk @cacy in 30 minutes #hype", d3);
     private static final Tweet tweet4 = new Tweet(4, "dert", "rivest talk @cacy in 30 minutes #hype", d4);
     private static final Tweet tweet5 = new Tweet(5, "eye", "rivest talk 1@eye1 in 30 minutes #hype", d5);
-    private static final Tweet tweet6 = new Tweet(5, "fly", "rivest talk @fly @fly in 30 @fly minutes #hype", d6);
+    private static final Tweet tweet6 = new Tweet(6, "fly", "rivest talk @fly @fly in 30 @fly minutes #hype", d6);
+    private static final Tweet tweet7 = new Tweet(7, "gear", "rivest talk @GEAR in 30 minutes #hype", d7);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -104,6 +107,15 @@ public class ExtractTest {
         
         assertEquals("expected only one", 1, mentionedUsers.size());
         assertEquals("expedted same name", tweet6.getAuthor(), it.next());   
+    }
+    
+    @Test
+    public void testGetMentionedUsersOneMentionCaseInsentative() {
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweet7));
+        Iterator<String> it = mentionedUsers.iterator();
+        
+        assertEquals("expected same size", 1, mentionedUsers.size());
+        assertEquals("expedted same name", tweet7.getAuthor(), it.next());   
     }
     
     /*

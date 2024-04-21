@@ -67,7 +67,7 @@ public class Extract {
             
             for(String str : strs)
             {
-                if(str.equals("@" + t.getAuthor()))
+                if(str.equalsIgnoreCase("@" + t.getAuthor()))
                 {
                     mentionedUsers.add(t.getAuthor());
                     break;
