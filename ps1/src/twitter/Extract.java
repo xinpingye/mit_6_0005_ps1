@@ -5,6 +5,8 @@ package twitter;
 
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
+import java.time.Instant;
 
 /**
  * Extract consists of methods that extract information from a list of tweets.
@@ -24,7 +26,19 @@ public class Extract {
      *         every tweet in the list.
      */
     public static Timespan getTimespan(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        //throw new RuntimeException("not implemented");
+        Instant begin = tweets.get(0).getTimestamp();
+        Instant end = tweets.get(0).getTimestamp();
+        for(Tweet t : tweets)
+        {
+            if(t.getTimestamp().getEpochSecond() < begin.getEpochSecond())
+                begin = t.getTimestamp();
+            if(t.getTimestamp().getEpochSecond() > end.getEpochSecond())
+                end = t.getTimestamp();
+        }
+        Timespan span = new Timespan(begin, end);
+        return span;
+        
     }
 
     /**
@@ -43,7 +57,26 @@ public class Extract {
      *         include a username at most once.
      */
     public static Set<String> getMentionedUsers(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        //throw new RuntimeException("not implemented");
+        
+        Set<String> mentionedUsers = new HashSet<String>();
+        
+        for(Tweet t : tweets)
+        {
+            String[] strs = t.getText().split("\\s+");
+            
+            for(String str : strs)
+            {
+                if(str.equals("@" + t.getAuthor()))
+                {
+                    mentionedUsers.add(t.getAuthor());
+                    break;
+                }
+            }
+        }
+        
+        return mentionedUsers;
+        
     }
 
 }
