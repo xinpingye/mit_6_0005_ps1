@@ -6,6 +6,8 @@ package twitter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * SocialNetwork provides methods that operate on a social network.
@@ -24,6 +26,40 @@ import java.util.Set;
  * private methods or classes if you like.
  */
 public class SocialNetwork {
+    
+    
+    private static Set<String> getMentionedOtherUsers(Tweet t) {
+        //throw new RuntimeException("not implemented");
+        
+        Set<String> mentionedOtherUsers = new HashSet<String>();
+        
+        String[] strs = t.getText().split("\\s+");
+        
+        for(String str : strs)
+        {
+            if(str.startsWith("@"))
+            {
+                String substr = str.substring(1);
+                if(substr.equalsIgnoreCase(t.getAuthor()))
+                    continue;
+                int flag = 1;
+                for(String mentionedUsers_str : mentionedOtherUsers)
+                {
+                    if(mentionedUsers_str.equalsIgnoreCase(substr))
+                    {
+                        flag = 0;
+                        break;
+                    }  
+                }
+                if(flag == 1)
+                    mentionedOtherUsers.add(substr);
+            }
+            
+        }
+        
+        return mentionedOtherUsers;
+        
+    }
 
     /**
      * Guess who might follow whom, from evidence found in tweets.
@@ -41,7 +77,21 @@ public class SocialNetwork {
      *         either authors or @-mentions in the list of tweets.
      */
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        //throw new RuntimeException("not implemented");
+        
+        Map<String, Set<String>> result = new HashMap<String, Set<String>>();
+        
+        for(Tweet t : tweets)
+        {
+            Set<String> st = getMentionedOtherUsers(t);
+            
+            if(result.containsKey(t.getAuthor()))
+                st.addAll(result.get(t.getAuthor()));
+            
+            result.put(t.getAuthor(), st);
+        }
+        
+        return result;
     }
 
     /**
