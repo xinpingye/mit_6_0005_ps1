@@ -49,7 +49,7 @@ public class ExtractTest {
     private static final Tweet tweet5 = new Tweet(5, "eye", "rivest talk 1@eye1 in 30 minutes #hype", d5);
     private static final Tweet tweet6 = new Tweet(6, "fly", "rivest talk @fly @fly in 30 @fly minutes #hype", d6);
     private static final Tweet tweet7 = new Tweet(7, "gear", "rivest talk @GEAR in 30 minutes #hype", d7);
-    private static final Tweet tweet8 = new Tweet(7, "het", "@cacy @dert @GEAR 1@eee.com", d8);
+    private static final Tweet tweet8 = new Tweet(7, "het", "@cacy @dert @GEAR @GEAR 1@eee.com", d8);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {

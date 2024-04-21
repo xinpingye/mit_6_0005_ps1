@@ -76,10 +76,28 @@ public class Extract {
                 }
                 */
                 /*adjust logic for judge*/
-                if(str.startsWith("@"))
+                /*if(str.startsWith("@"))
                 {
                     mentionedUsers.add(str.substring(1));
                 }
+                */
+                /*new version*/
+                if(str.startsWith("@"))
+                {
+                    String substr = str.substring(1);
+                    int flag = 1;
+                    for(String mentionedUsers_str : mentionedUsers)
+                    {
+                        if(mentionedUsers_str.equalsIgnoreCase(substr))
+                        {
+                            flag = 0;
+                            break;
+                        }  
+                    }
+                    if(flag == 1)
+                        mentionedUsers.add(substr);
+                }
+                
             }
         }
         
