@@ -40,6 +40,7 @@ public class ExtractTest {
     private static final Instant d5 = Instant.parse("2016-02-17T14:00:00Z");
     private static final Instant d6 = Instant.parse("2016-02-17T15:00:00Z");
     private static final Instant d7 = Instant.parse("2016-02-17T16:00:00Z");
+    private static final Instant d8 = Instant.parse("2016-02-17T16:00:00Z");
     
     private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?", d1);
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
@@ -48,6 +49,7 @@ public class ExtractTest {
     private static final Tweet tweet5 = new Tweet(5, "eye", "rivest talk 1@eye1 in 30 minutes #hype", d5);
     private static final Tweet tweet6 = new Tweet(6, "fly", "rivest talk @fly @fly in 30 @fly minutes #hype", d6);
     private static final Tweet tweet7 = new Tweet(7, "gear", "rivest talk @GEAR in 30 minutes #hype", d7);
+    private static final Tweet tweet8 = new Tweet(7, "het", "@cacy @dert @GEAR 1@eee.com", d8);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -89,8 +91,11 @@ public class ExtractTest {
     @Test
     public void testGetMentionedUsersMisMatchMention() {
         Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweet4));
+        Iterator<String> it = mentionedUsers.iterator();
         
-        assertEquals("expected no username-mention", 0, mentionedUsers.size());   
+        assertEquals("expected one username-mention", 1, mentionedUsers.size());
+        assertTrue("expected username equal", it.next().equalsIgnoreCase("cacy"));
+        
     }
     
     @Test
@@ -115,8 +120,20 @@ public class ExtractTest {
         Iterator<String> it = mentionedUsers.iterator();
         
         assertEquals("expected same size", 1, mentionedUsers.size());
-        assertEquals("expedted same name", tweet7.getAuthor(), it.next());   
+        assertTrue("expedted same name", tweet7.getAuthor().equalsIgnoreCase(it.next()));   
     }
+    
+    @Test
+    public void testGetMentionedUsersOneMentionCaseAdjustCase() {
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweet8));
+        Iterator<String> it = mentionedUsers.iterator();
+        
+        assertEquals("expected same size", 3, mentionedUsers.size());
+        assertEquals("expedted same name", "cacy", it.next());
+        assertEquals("expedted same name", "dert", it.next());
+        assertEquals("expedted same name", "GEAR", it.next());
+    }
+    
     
     /*
      * Warning: all the tests you write here must be runnable against any

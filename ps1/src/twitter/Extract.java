@@ -67,10 +67,18 @@ public class Extract {
             
             for(String str : strs)
             {
+                /*misunderstanding for this method*/
+                /*
                 if(str.equalsIgnoreCase("@" + t.getAuthor()))
                 {
                     mentionedUsers.add(t.getAuthor());
                     break;
+                }
+                */
+                /*adjust logic for judge*/
+                if(str.startsWith("@"))
+                {
+                    mentionedUsers.add(str.substring(1));
                 }
             }
         }
