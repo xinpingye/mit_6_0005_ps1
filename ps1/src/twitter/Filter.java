@@ -4,6 +4,8 @@
 package twitter;
 
 import java.util.List;
+import java.time.Instant;
+import java.util.ArrayList;
 
 /**
  * Filter consists of methods that filter a list of tweets for those matching a
@@ -27,7 +29,17 @@ public class Filter {
      *         in the same order as in the input list.
      */
     public static List<Tweet> writtenBy(List<Tweet> tweets, String username) {
-        throw new RuntimeException("not implemented");
+        //throw new RuntimeException("not implemented");
+        
+        List<Tweet> result = new ArrayList<Tweet>();
+        
+        for(Tweet t : tweets)
+        {
+            if(username.equals(t.getAuthor()))
+                result.add(t);
+        }
+        
+        return result;
     }
 
     /**
@@ -41,7 +53,21 @@ public class Filter {
      *         in the same order as in the input list.
      */
     public static List<Tweet> inTimespan(List<Tweet> tweets, Timespan timespan) {
-        throw new RuntimeException("not implemented");
+        //throw new RuntimeException("not implemented");
+        
+        List<Tweet> result = new ArrayList<Tweet>();
+        
+        long begin_seconds = timespan.getStart().getEpochSecond();
+        long end_seconds = timespan.getEnd().getEpochSecond();
+        
+        for(Tweet t : tweets)
+        {
+            long tweet_seconds = t.getTimestamp().getEpochSecond();
+            if(tweet_seconds < begin_seconds || tweet_seconds > end_seconds)
+                continue;
+            result.add(t);
+        }
+        return result;
     }
 
     /**
@@ -60,7 +86,39 @@ public class Filter {
      *         same order as in the input list.
      */
     public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
-        throw new RuntimeException("not implemented");
+        //throw new RuntimeException("not implemented");
+        
+        List<Tweet> result = new ArrayList<Tweet>();
+        
+        int flag = 0;
+        
+        for(Tweet t : tweets)
+        {
+            flag = 0;
+            
+            String[] strs = t.getText().split("\\s+");
+            
+            for(String str : strs)
+            {
+                for(String word : words)
+                {
+                    if(str.equals(word))
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(flag == 1)
+                {
+                    break;
+                }
+            }
+            
+            if(flag == 1)
+                result.add(t);
+        }
+        
+        return result;
     }
 
 }
